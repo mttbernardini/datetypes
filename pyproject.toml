@@ -5,7 +5,7 @@ description = "Typed counterparts for built-in `datetime` module classes"
 authors = [
     {name = "Matteo Bernardini", email = "matteo@teobe.net"},
 ]
-dependencies = ["typing-extensions"]
+dependencies = []
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
