@@ -14,7 +14,7 @@ assert_type(dt, DateTime[None])
 assert_type(dt, NaiveDateTime)
 
 # detect timezone incompatible comparisons
-Time(12, 0, tzinfo=timezone.utc) < t  # mypy error! cannot compare Time[timezone] with NaiveTime
+Time(12, 0, tzinfo=timezone.utc) < t  # mypy error! cannot compare Time[timezone] with Time[None]
 
 # DateTime doesn't subclass Date
 def message(d: Date):
