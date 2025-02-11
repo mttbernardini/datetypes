@@ -11,6 +11,7 @@ from datetypes import (
     NaiveDateTime,
     NaiveTime,
     Time,
+    as_date,
     is_aware,
     is_naive,
     typed,
@@ -44,7 +45,7 @@ def test_native_basic():
 
     # check function calls
     native_function(d, t, dt)
-    typed_function(typed(d), typed(t), typed(dt))
+    typed_function(as_date(d), typed(t), typed(dt))
 
     # typing assertions
     assert_type(d, date)

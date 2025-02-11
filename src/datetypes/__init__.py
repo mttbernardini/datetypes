@@ -69,3 +69,8 @@ def as_naive(dt):
 def as_aware(dt):
     assert is_aware(dt), f"Expected aware object, received {dt}"
     return dt
+
+
+def as_date(dt):
+    assert type(dt) is _date, f"Excepted datetime.date object, received {dt}"
+    return dt
