@@ -52,13 +52,15 @@ def typed(dt):
 
 
 def is_naive(dt):
-    # TODO: check utcoffset too, according to spec
-    return dt.tzinfo is None
+    # see: https://docs.python.org/3/library/datetime.html#determining-if-an-object-is-aware-or-naive
+    arg = dt if isinstance(dt, _datetime) else None
+    return dt.tzinfo is None or dt.tzinfo.utcoffset(arg) is None
 
 
 def is_aware(dt):
-    # TODO: check utcoffset too, according to spec
-    return dt.tzinfo is not None
+    # see: https://docs.python.org/3/library/datetime.html#determining-if-an-object-is-aware-or-naive
+    arg = dt if isinstance(dt, _datetime) else None
+    return dt.tzinfo is not None and dt.tzinfo.utcoffset(arg) is not None
 
 
 def as_naive(dt):
