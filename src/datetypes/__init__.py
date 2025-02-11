@@ -33,6 +33,16 @@ except Exception:
     NaiveDateTime = DateTime
     AwareDateTime = DateTime
 
+# attach support for generic syntax at runtime with minimal work.
+#
+# NOTE: This doesn't seem to work - I don't want to resort to an actual subclass
+# using Generic (as done in the stubs), even if I were to return the concrete
+# type on __new__(), otherwise the type may not play well with Pydantic and
+# other libraries relying on runtime type annotations.
+#
+# Time.__class_getitem__ = lambda cls, _: cls
+# DateTime.__class_getitem__ = lambda cls, _: cls
+
 
 # --- utility functions ---
 

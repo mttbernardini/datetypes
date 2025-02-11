@@ -1,7 +1,7 @@
 [project]
 name = "datetypes"
 version = "0.1.0"
-description = "Typed counterparts for built-in `datetime` module"
+description = "Typed counterparts for built-in `datetime` module classes"
 authors = [
     {name = "Matteo Bernardini", email = "matteo@teobe.net"},
 ]

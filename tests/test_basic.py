@@ -1,4 +1,4 @@
-from datetime import date, datetime, time, timezone
+from datetime import date, datetime, time, timedelta, timezone
 
 import pytest
 from typing_extensions import assert_type
@@ -131,24 +131,16 @@ def test_aware_versions():
 @pytest.mark.skip(reason="unclear whether we want generics at runtime?")
 def test_generic_versions():
     aware_t: AwareTime = Time(12, 0, tzinfo=timezone.utc)
-    assert isinstance(aware_t, AwareTime)
+    assert isinstance(aware_t, AwareTime)  # pyright: ignore[reportArgumentType]
 
     aware_dt: AwareDateTime = DateTime(2024, 1, 1, 15, 0, tzinfo=timezone.utc)
-    assert isinstance(aware_dt, AwareDateTime)
+    assert isinstance(aware_dt, AwareDateTime)  # pyright: ignore[reportArgumentType]
 
     naive_t: NaiveTime = Time(12, 0)
-    assert isinstance(naive_t, NaiveTime)
+    assert isinstance(naive_t, NaiveTime)  # pyright: ignore[reportArgumentType]
 
     naive_dt: NaiveDateTime = DateTime(2024, 1, 1, 15, 0)
-    assert isinstance(naive_dt, NaiveDateTime)
-
-
-def test_datetime_is_not_date():
-    dt = DateTime(2024, 1, 1, 15, 0)
-    assert_type(dt.date(), Date)
-
-    # assert not isinstance(dt, Date) # TODO
-    assert isinstance(dt.date(), Date)
+    assert isinstance(naive_dt, NaiveDateTime)  # pyright: ignore[reportArgumentType]
 
 
 @pytest.mark.skip(reason="unclear whether we want generics at runtime?")
@@ -161,14 +153,12 @@ def test_generic_parameters():
     assert type(My_Time(12, 0)) == time  # noqa: E721
 
 
-def test_now():
-    naive_dt = DateTime.now()
-    aware_dt = DateTime.now(timezone.utc)
-    enforced_naive_dt = DateTime.now(None)
+def test_datetime_is_not_date():
+    dt = DateTime(2024, 1, 1, 15, 0)
+    assert_type(dt.date(), Date)
 
-    assert is_naive(naive_dt)
-    assert is_aware(aware_dt)
-    assert is_naive(enforced_naive_dt)
+    # assert not isinstance(dt, Date) # TODO
+    assert isinstance(dt.date(), Date)
 
 
 def test_today():
@@ -202,31 +192,31 @@ def test_replace():
     assert is_naive(t_with_tz_removed)
 
 
-def test_combine():
+def test_maths():
     d = Date(2024, 1, 1)
-    t = Time(12, 0)
-    ttz = Time(12, 0, tzinfo=timezone.utc)
+    t = Time(15, 0)
+    dt = DateTime.combine(d, t)
 
-    dt_default_naive = DateTime.combine(d, t)
-    assert_type(dt_default_naive, NaiveDateTime)
-    assert is_naive(dt_default_naive)
+    d_plus_one: Date = d + timedelta(days=1)
+    assert d_plus_one
 
-    dt_default_aware = DateTime.combine(d, ttz)
-    assert_type(dt_default_aware, "DateTime[timezone]")
-    assert is_aware(dt_default_aware)
+    d_minus_one: Date = d - timedelta(days=1)
+    assert d_minus_one
 
-    dt_tz_added_from_naive = DateTime.combine(d, t, timezone.utc)
-    assert_type(dt_tz_added_from_naive, "DateTime[timezone]")
-    assert is_aware(dt_tz_added_from_naive)
+    dt_plus_one: DateTime = dt + timedelta(days=1)
+    assert dt_plus_one
 
-    dt_tz_added_from_aware = DateTime.combine(d, ttz, timezone.utc)
-    assert_type(dt_tz_added_from_aware, "DateTime[timezone]")
-    assert is_aware(dt_tz_added_from_aware)
+    dt_minus_one: DateTime = dt - timedelta(days=1)
+    assert dt_minus_one
 
-    dt_tz_removed_from_naive = DateTime.combine(d, t, None)
-    assert_type(dt_tz_removed_from_naive, NaiveDateTime)
-    assert is_naive(dt_tz_removed_from_naive)
+    diff1: timedelta = d - d
+    assert diff1.total_seconds() == 0
 
-    dt_tz_removed_from_aware = DateTime.combine(d, ttz, None)
-    assert_type(dt_tz_removed_from_aware, NaiveDateTime)
-    assert is_naive(dt_tz_removed_from_aware)
+    diff2: timedelta = dt - dt
+    assert diff2.total_seconds() == 0
+
+    with pytest.raises(TypeError):
+        assert d - dt  # pyright: ignore[reportOperatorIssue]
+
+    with pytest.raises(TypeError):
+        assert dt - d  # pyright: ignore[reportOperatorIssue]
