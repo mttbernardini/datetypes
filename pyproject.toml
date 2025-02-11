@@ -1,0 +1,45 @@
+[project]
+name = "datetypes"
+version = "0.1.0"
+description = "Typed counterparts for built-in `datetime` module"
+authors = [
+    {name = "Matteo Bernardini", email = "matteo@teobe.net"},
+]
+dependencies = ["typing-extensions"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["flit_core>=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[dependency-groups]
+dev = [
+    "pytest~=8.3",
+    "ruff~=0.9",
+    "pyright>=1.1.393",
+]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+_ruff_check = "ruff check --fix"
+_ruff_format = "ruff format"
+_pyright = "pyright"
+
+lint = {composite = ["_ruff_check", "_ruff_format", "_pyright"], keep_going = true}
+test = "pytest"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "-rfxs",
+]
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "UP", "B", "SIM", "I", "RUF", "TCH"]
