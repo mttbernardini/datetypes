@@ -50,5 +50,5 @@ expect this library to be mainly used for static type annotations.
 
 ## Documentation
 
-WIP, but for examples simply refer to [tests/test_basic.py] and other test
-files.
+WIP, but for examples simply refer to [tests/test_basic.py](tests/test_basic.py)
+and other test files.
