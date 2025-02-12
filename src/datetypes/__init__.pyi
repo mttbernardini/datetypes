@@ -48,6 +48,7 @@ class Date(_date):
     Date object with no time associated.
     """
 
+    # restrict `datetime.date -> Self` to prevent comparisons with `DateTime`
     def __le__(self, value: Self, /) -> bool: ...
     def __lt__(self, value: Self, /) -> bool: ...
     def __ge__(self, value: Self, /) -> bool: ...
@@ -66,6 +67,7 @@ class Time(_time, Generic[_MaybeTZ]):
     Generic Time object with optional timezone attached.
     """
 
+    # replace `datetime.time -> Time`
     min: ClassVar[Time]
     max: ClassVar[Time]
 
@@ -80,6 +82,7 @@ class Time(_time, Generic[_MaybeTZ]):
         fold: int = ...,
     ) -> Time[_OptionalTZ]: ...
     #
+    # fix inherited stubs to consider generic timezone
     @property
     def tzinfo(self) -> _MaybeTZ: ...
 
@@ -107,6 +110,7 @@ class Time(_time, Generic[_MaybeTZ]):
         fold: int = ...,
     ) -> Time[_OptionalTZ]: ...
     #
+    # prevent aware-vs-naive comparisons
     @overload
     def __le__(self: NaiveTime, value: NaiveTime, /) -> bool: ...
     @overload
@@ -137,6 +141,7 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
     Generic DateTime object with optional timezone attached.
     """
 
+    # replace `datetime.date -> DateTime`
     min: ClassVar[DateTime]
     max: ClassVar[DateTime]
 
@@ -154,6 +159,7 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
         fold: int = ...,
     ) -> DateTime[_OptionalTZ]: ...
     #
+    # fix inherited stubs to consider generic timezone
     @property
     def tzinfo(self) -> _MaybeTZ: ...
 
@@ -227,6 +233,7 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
     @overload
     def astimezone(self, tz: _TZ) -> DateTime[_TZ]: ...
     #
+    # prevent aware-vs-naive comparisons
     @overload
     def __le__(self: NaiveDateTime, value: NaiveDateTime, /) -> bool: ...
     @overload
@@ -251,7 +258,7 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
     @overload
     def __sub__(self, value: _timedelta, /) -> Self: ...
     #
-    # Fix types of methods iherited from datetime.date that don't encode time
+    # fix stubs iherited from datetime.date that don't encode time
     @classmethod
     def today(cls) -> NaiveDateTime: ...
     @classmethod
