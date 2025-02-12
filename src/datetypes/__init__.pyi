@@ -77,10 +77,10 @@ class Time(_time, Generic[_MaybeTZ]):
         minute: SupportsIndex = ...,
         second: SupportsIndex = ...,
         microsecond: SupportsIndex = ...,
-        tzinfo: _OptionalTZ = None,
+        tzinfo: _MaybeTZ = None,
         *,
         fold: int = ...,
-    ) -> Time[_OptionalTZ]: ...
+    ) -> Time[_MaybeTZ]: ...
     #
     # fix inherited stubs to consider generic timezone
     @property
@@ -154,10 +154,10 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
         minute: SupportsIndex = ...,
         second: SupportsIndex = ...,
         microsecond: SupportsIndex = ...,
-        tzinfo: _OptionalTZ = None,
+        tzinfo: _MaybeTZ = None,
         *,
         fold: int = ...,
-    ) -> DateTime[_OptionalTZ]: ...
+    ) -> DateTime[_MaybeTZ]: ...
     #
     # fix inherited stubs to consider generic timezone
     @property

@@ -129,6 +129,22 @@ def test_aware_versions():
     assert isinstance(dt, datetime)
 
 
+def test_incompatible_aliases():
+    # no timezone provided, should type error
+    actually_naive_t = AwareTime(12, 0)  # pyright: ignore[reportArgumentType]
+    assert actually_naive_t
+
+    actually_naive_dt = AwareDateTime(2024, 1, 1, 12, 0)  # pyright: ignore[reportArgumentType]
+    assert actually_naive_dt
+
+    # timezone provided, should type error
+    actually_aware_t = NaiveTime(12, 0, tzinfo=timezone.utc)  # pyright: ignore[reportArgumentType]
+    assert actually_aware_t
+
+    actually_aware_dt = NaiveDateTime(2024, 1, 1, 12, 0, tzinfo=timezone.utc)  # pyright: ignore[reportArgumentType]
+    assert actually_aware_dt
+
+
 @pytest.mark.skip(reason="unclear whether we want generics at runtime?")
 def test_generic_versions():
     aware_t: AwareTime = Time(12, 0, tzinfo=timezone.utc)
@@ -150,8 +166,8 @@ def test_generic_parameters():
     My_Time = Time[timezone]
 
     # just alias at runtime
-    assert type(My_DateTime(2024, 1, 1)) == datetime  # noqa: E721
-    assert type(My_Time(12, 0)) == time  # noqa: E721
+    assert type(My_DateTime(2024, 1, 1, tzinfo=timezone.utc)) == datetime  # noqa: E721
+    assert type(My_Time(12, 0, tzinfo=timezone.utc)) == time  # noqa: E721
 
 
 def test_datetime_is_not_date():
