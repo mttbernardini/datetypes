@@ -136,3 +136,25 @@ def test_difference():
 
     with pytest.raises(TypeError):
         assert naive_dt - aware_dt_zone  # pyright: ignore[reportOperatorIssue]
+
+
+def test_inherited_from_date():
+    ts: NaiveDateTime = DateTime.fromtimestamp(1234567890)
+    assert isinstance(ts, DateTime)
+    # assert not isinstance(ts, Date)
+
+    today: NaiveDateTime = DateTime.today()
+    assert isinstance(today, DateTime)
+    # assert not isinstance(today, Date)
+
+    ord: NaiveDateTime = DateTime.fromordinal(123)
+    assert isinstance(ord, DateTime)
+    # assert not isinstance(ord, Date)
+
+    isoform: DateTime = DateTime.fromisoformat("2024-03-01")
+    assert isinstance(isoform, DateTime)
+    # assert not isinstance(isoform, Date)
+
+    isocal: NaiveDateTime = DateTime.fromisocalendar(2024, 3, 2)
+    assert isinstance(isocal, DateTime)
+    # assert not isinstance(calendar, Date)

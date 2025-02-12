@@ -250,6 +250,16 @@ class DateTime(_datetime, Generic[_MaybeTZ]):
     def __sub__(self: AwareDateTime, value: AwareDateTime, /) -> _timedelta: ...
     @overload
     def __sub__(self, value: _timedelta, /) -> Self: ...
+    #
+    # Fix types of methods iherited from datetime.date that don't encode time
+    @classmethod
+    def today(cls) -> NaiveDateTime: ...
+    @classmethod
+    def fromordinal(cls, n: int, /) -> NaiveDateTime: ...
+    @classmethod
+    def fromisocalendar(
+        cls, year: int, week: int, day: int
+    ) -> NaiveDateTime: ...
 
 NaiveDateTime: TypeAlias = DateTime[None]
 """Alias for DateTime with no timezone associated."""
