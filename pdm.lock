@@ -2,10 +2,10 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default", "dev"]
+groups = ["default", "dev", "pydantic"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5d73f4fc518fbd9bb32e2cad7dc07e4dfe8ce5c22caea1f0ab8fc5447a2f9112"
+content_hash = "sha256:480a02e31373870ae352e346005484442750a6cec08ae713724a01743e466529"
 
 [[metadata.targets]]
 requires_python = ">=3.9"
@@ -15,7 +15,7 @@ name = "annotated-types"
 version = "0.7.0"
 requires_python = ">=3.8"
 summary = "Reusable constraint types to use with typing.Annotated"
-groups = ["dev"]
+groups = ["pydantic"]
 dependencies = [
     "typing-extensions>=4.0.0; python_version < \"3.9\"",
 ]
@@ -150,7 +150,7 @@ name = "pydantic"
 version = "2.10.6"
 requires_python = ">=3.8"
 summary = "Data validation using Python type hints"
-groups = ["dev"]
+groups = ["pydantic"]
 dependencies = [
     "annotated-types>=0.6.0",
     "pydantic-core==2.27.2",
@@ -166,7 +166,7 @@ name = "pydantic-core"
 version = "2.27.2"
 requires_python = ">=3.8"
 summary = "Core functionality for Pydantic validation and serialization"
-groups = ["dev"]
+groups = ["pydantic"]
 dependencies = [
     "typing-extensions!=4.7.0,>=4.6.0",
 ]
@@ -422,7 +422,7 @@ name = "typing-extensions"
 version = "4.12.2"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
-groups = ["dev"]
+groups = ["dev", "pydantic"]
 files = [
     {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},

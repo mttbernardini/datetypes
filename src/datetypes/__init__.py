@@ -26,6 +26,10 @@ try:
     NaiveDateTime = Annotated[DateTime, Timezone(None)]
     AwareDateTime = Annotated[DateTime, Timezone(...)]
 
+    @classmethod
+    def _generic_hook(cls, key):
+        return Annotated[cls, Timezone(... if key is not None else None)]
+
 except Exception:
     # just alias symbols otherwise
     NaiveTime = Time
@@ -34,6 +38,10 @@ except Exception:
     NaiveDateTime = DateTime
     AwareDateTime = DateTime
 
+    @classmethod
+    def _generic_hook(cls, key):
+        return cls
+
 # inject support for generic syntax at runtime with minimal work.
 #
 # NOTE: This may look really hacky - I don't want to resort to an actual
@@ -41,18 +49,6 @@ except Exception:
 # I were to return the concrete type on __new__(), because the type would be
 # distinct from built-in and it won't play well with Pydantic and other
 # libraries relying on runtime annotation introspection.
-
-
-@classmethod
-def _generic_hook(cls, key):
-    """
-    Injected by `datetype` to allow generic `time` and `datetime` expressions
-    at runtime.
-    """
-    # not expecting this would break anything, since it's already deep in Python
-    # internals. But leaving the docstring may help in case anything breaks and
-    # you need to find who to blame, i.e. me :)
-    return cls
 
 
 try:
