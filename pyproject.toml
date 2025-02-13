@@ -20,6 +20,7 @@ dev = [
     "ruff~=0.9",
     "pyright>=1.1.393",
     "tox-pdm~=0.7",
+    "pydantic~=2.10",
 ]
 
 [tool.pdm]
