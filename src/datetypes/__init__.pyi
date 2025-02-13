@@ -28,7 +28,12 @@ from typing import (
     overload,
 )
 
-from typing_extensions import Self, TypeAlias, TypeIs, TypeVar
+from typing_extensions import (
+    Self,
+    TypeAlias,
+    TypeIs,
+    TypeVar,
+)
 
 _MaybeTZ = TypeVar(
     "_MaybeTZ",

@@ -6,9 +6,53 @@ from datetime import time as _time
 
 # --- basic symbols ---
 
-Date = _date
-Time = _time
-DateTime = _datetime
+
+class _InstanceCheckMeta(type):
+    def __instancecheck__(self, instance):
+        return self._subclass_check_hook(instance)
+
+
+class Date(_date, metaclass=_InstanceCheckMeta):
+    def __new__(cls, *args, **kwargs):
+        # return an instance of datetime.date, not this proxy class
+        return _date.__new__(_date, *args, **kwargs)
+
+    @classmethod
+    def _subclass_check_hook(cls, obj):
+        # allow Date to be used as base class for instance checks.
+        # bonus: reject _datetime instances
+        return isinstance(obj, _date) and not isinstance(obj, _datetime)
+
+
+class Time(_time, metaclass=_InstanceCheckMeta):
+    def __new__(cls, *args, **kwargs):
+        # return an instance of datetime.time, not this proxy class
+        return _time.__new__(_time, *args, **kwargs)
+
+    def __class_getitem__(cls, key):
+        # support generic syntax at runtime
+        return cls
+
+    @classmethod
+    def _subclass_check_hook(cls, obj):
+        # allow Time to be used as base class for instance checks
+        return isinstance(obj, _time)
+
+
+class DateTime(_datetime, metaclass=_InstanceCheckMeta):
+    def __new__(cls, *args, **kwargs):
+        # return an instance of datetime.datetime, not this proxy class
+        return _datetime.__new__(_datetime, *args, **kwargs)
+
+    def __class_getitem__(cls, key):
+        # support generic syntax at runtime
+        return cls
+
+    @classmethod
+    def _subclass_check_hook(cls, obj):
+        # allow DateTime to be used as base class for instance checks
+        return isinstance(obj, _datetime)
+
 
 # --- naive vs aware ---
 try:
@@ -32,16 +76,6 @@ except Exception:
 
     NaiveDateTime = DateTime
     AwareDateTime = DateTime
-
-# attach support for generic syntax at runtime with minimal work.
-#
-# NOTE: This doesn't seem to work - I don't want to resort to an actual subclass
-# using Generic (as done in the stubs), even if I were to return the concrete
-# type on __new__(), otherwise the type may not play well with Pydantic and
-# other libraries relying on runtime type annotations.
-#
-# Time.__class_getitem__ = lambda cls, _: cls
-# DateTime.__class_getitem__ = lambda cls, _: cls
 
 
 # --- utility functions ---
