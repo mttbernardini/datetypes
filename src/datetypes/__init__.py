@@ -1,5 +1,6 @@
 # type: ignore
 
+import gc as _gc
 from datetime import date as _date
 from datetime import datetime as _datetime
 from datetime import time as _time
@@ -33,15 +34,34 @@ except Exception:
     NaiveDateTime = DateTime
     AwareDateTime = DateTime
 
-# attach support for generic syntax at runtime with minimal work.
+# inject support for generic syntax at runtime with minimal work.
 #
-# NOTE: This doesn't seem to work - I don't want to resort to an actual subclass
-# using Generic (as done in the stubs), even if I were to return the concrete
-# type on __new__(), otherwise the type may not play well with Pydantic and
-# other libraries relying on runtime type annotations.
-#
-# Time.__class_getitem__ = lambda cls, _: cls
-# DateTime.__class_getitem__ = lambda cls, _: cls
+# NOTE: This may look really hacky - I don't want to resort to an actual
+# subclass defining __class_getitem__ + metaclass for isinstance hooks, even if
+# I were to return the concrete type on __new__(), because the type would be
+# distinct from built-in and it won't play well with Pydantic and other
+# libraries relying on runtime annotation introspection.
+
+
+@classmethod
+def _generic_hook(cls, key):
+    """
+    Injected by `datetype` to allow generic `time` and `datetime` expressions
+    at runtime.
+    """
+    # not expecting this would break anything, since it's already deep in Python
+    # internals. But leaving the docstring may help in case anything breaks and
+    # you need to find who to blame, i.e. me :)
+    return cls
+
+
+try:
+    _gc.get_referents(_time.__dict__)[0]["__class_getitem__"] = _generic_hook
+    _gc.get_referents(_datetime.__dict__)[0]["__class_getitem__"] = (
+        _generic_hook
+    )
+except Exception:
+    pass
 
 
 # --- utility functions ---

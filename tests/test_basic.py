@@ -91,13 +91,7 @@ def test_naive_versions():
     naive_function(t, dt)
     native_function(dt.date(), t, dt)
 
-    # check strict types # TODO
-    # assert isinstance(t, NaiveTime)
-    # assert isinstance(dt, NaiveDateTime)
-    # assert not isinstance(t, AwareTime)
-    # assert not isinstance(dt, AwareDateTime)
-
-    # check lax types
+    # check library types
     assert isinstance(t, Time)
     assert isinstance(dt, DateTime)
 
@@ -114,13 +108,7 @@ def test_aware_versions():
     aware_function(t, dt)
     native_function(dt.date(), t, dt)
 
-    # check strict types # TODO
-    # assert isinstance(t, AwareTime)
-    # assert isinstance(dt, AwareDateTime)
-    # assert not isinstance(t, NaiveTime)
-    # assert not isinstance(dt, NaiveDateTime)
-
-    # check lax types
+    # check library types
     assert isinstance(t, Time)
     assert isinstance(dt, DateTime)
 
@@ -160,22 +148,21 @@ def test_generic_versions():
     assert isinstance(naive_dt, NaiveDateTime)  # pyright: ignore[reportArgumentType]
 
 
-@pytest.mark.skip(reason="unclear whether we want generics at runtime?")
 def test_generic_parameters():
     My_DateTime = DateTime[timezone]
     My_Time = Time[timezone]
 
-    # just alias at runtime
-    assert type(My_DateTime(2024, 1, 1, tzinfo=timezone.utc)) == datetime  # noqa: E721
-    assert type(My_Time(12, 0, tzinfo=timezone.utc)) == time  # noqa: E721
+    # just alias to built-in at runtime
+    assert type(My_DateTime(2024, 1, 1, tzinfo=timezone.utc)) is datetime
+    assert type(My_Time(12, 0, tzinfo=timezone.utc)) is time
 
 
 def test_datetime_is_not_date():
     dt = DateTime(2024, 1, 1, 15, 0)
     assert_type(dt.date(), Date)
 
-    # assert not isinstance(dt, Date) # TODO
     assert isinstance(dt.date(), Date)
+    assert type(dt) is not Date
 
 
 def test_today():
