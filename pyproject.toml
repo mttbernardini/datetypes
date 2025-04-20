@@ -8,6 +8,20 @@ dependencies = []
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Typing :: Typed",
+    "Topic :: System",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Localization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.9",
+]
 dynamic = "version"
 
 [build-system]
