@@ -1,6 +1,5 @@
 [project]
 name = "datetypes"
-version = "0.1.0"
 description = "Typed counterparts for built-in `datetime` module classes"
 authors = [
     {name = "Matteo Bernardini", email = "matteo@teobe.net"},
@@ -9,10 +8,11 @@ dependencies = []
 requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
+dynamic = "version"
 
 [build-system]
-requires = ["flit_core>=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [dependency-groups]
 dev = [
@@ -23,6 +23,9 @@ dev = [
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.version]
+source = "scm"
 
 [tool.pdm.scripts]
 _ruff_check = "ruff check --fix"
