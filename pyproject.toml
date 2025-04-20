@@ -22,7 +22,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.9",
 ]
-dynamic = "version"
+dynamic = ["version"]
 
 [build-system]
 requires = ["pdm-backend"]
