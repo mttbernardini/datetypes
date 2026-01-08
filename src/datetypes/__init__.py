@@ -11,27 +11,11 @@ Time = _time
 DateTime = _datetime
 
 # --- naive vs aware ---
-try:
-    # attach annotate-types for runtime introspection, if available
-    from typing import Annotated
 
-    from annotated_types import (
-        Timezone,
-    )
-
-    NaiveTime = Annotated[Time, Timezone(None)]
-    AwareTime = Annotated[Time, Timezone(...)]
-
-    NaiveDateTime = Annotated[DateTime, Timezone(None)]
-    AwareDateTime = Annotated[DateTime, Timezone(...)]
-
-except Exception:
-    # just alias symbols otherwise
-    NaiveTime = Time
-    AwareTime = Time
-
-    NaiveDateTime = DateTime
-    AwareDateTime = DateTime
+NaiveTime = Time
+AwareTime = Time
+NaiveDateTime = DateTime
+AwareDateTime = DateTime
 
 # attach support for generic syntax at runtime with minimal work.
 #
